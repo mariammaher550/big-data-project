@@ -25,13 +25,6 @@ CREATE TABLE book_ratings (
   PRIMARY KEY (user_id, isbn)
 );
 
-
-
-
-
-
-
-
 --
 ALTER TABLE book_ratings ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id);
 ALTER TABLE book_ratings ADD CONSTRAINT fk_isbn FOREIGN KEY (isbn) REFERENCES books(isbn);
@@ -45,4 +38,4 @@ ALTER TABLE book_ratings ADD CONSTRAINT fk_isbn FOREIGN KEY (isbn) REFERENCES bo
 \COPY book_ratings (user_id, isbn, rating) FROM 'ratings.csv' DELIMITER ',' CSV HEADER;
 
 
-select * from book_ratings where user_id=276725
+-- select * from book_ratings where user_id=276725
