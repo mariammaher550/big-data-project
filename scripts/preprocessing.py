@@ -33,4 +33,4 @@ unique_user_ids = users_df['user_id'].unique()
 ratings_filtered = ratings_df[ratings_df['user_id'].isin(unique_user_ids)]
 unique_isbn = books_df['isbn'].unique()
 ratings_filtered = ratings_df[ratings_df['isbn'].isin(unique_isbn)]
-ratings_df.to_csv("data/ratings.csv", index=False)
+ratings_filtered.to_csv("data/ratings.csv", index=False)
