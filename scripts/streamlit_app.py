@@ -27,7 +27,6 @@ def get_two_cols(data_path):
     return col_1, col_2
 
 
-
 def plot_bar(data, x_label, y_label, title, description):
     """
     Create a bar chart with age groups on the x-axis and number of users on the y-axis
@@ -79,15 +78,14 @@ def plot_table(data_path, col_name, title, description):
     st.table(data)
 
 
-
-
 def download_csv(data):
     """
     Function to download CSV file
     """
     csv = data.to_csv(index=False)
     b64 = base64.b64encode(csv)
-    href = '<a href="data:file/csv;base64,{0}" download="data.csv">Download CSV</a>'.format(b64)
+    href = '<a href="data:file/csv;base64,{0}" download="data.csv">Download CSV</a>'.format(
+        b64)
     return href
 
 
@@ -96,10 +94,10 @@ st.write("Book Recommendation System")
 st.write("Year: 2023")
 
 ratings = pd.read_csv("data/ratings.csv")
-# als_prediction = pd.read_csv('output/als_predictions.csv/als_predictions.csv')
-# dt_prediction = pd.read_csv('output/als_predictions.csv/dt_predictions.csv')
-# als_one_user = pd.read_csv('output/als_predictions.csv/als_rec_148744.csv')
-# dt_one_user = pd.read_csv('output/als_predictions.csv/dt_rec_148744.csv')
+als_prediction = pd.read_csv('output/als_predictions.csv')
+dt_prediction = pd.read_csv('output/dt_predictions.csv')
+als_one_user = pd.read_csv('output/als_rec_148744.csv')
+dt_one_user = pd.read_csv('output/dt_rec_148744.csv')
 
 # Define main content
 st.title('Data Characteristics')
@@ -162,34 +160,34 @@ plot_table('output/q5.csv', "Book Author",
 RMSE_MODEL1 = 5.32
 RMSE_MODEL2 = 3.82
 
-# # Define section title
-# st.header('Models Performance')
-#
-# # Define content
-# st.write('Here is the performance of the two models:')
-# st.write('- **ALS**: RMSE = ' + str('%.3f' % RMSE_MODEL1))
-# st.write('- **Decision Trees**: RMSE = ' + str('%.3f' % RMSE_MODEL2))
-#
-#
-# if st.checkbox("Show ALS predicitons"):
-#     st.write('## Data')
-#     st.write(als_prediction)
-#     st.markdown(download_csv(als_prediction), unsafe_allow_html=True)
-#
-# if st.checkbox("Show DT predicitons"):
-#     st.write('## Data')
-#     st.write(dt_prediction)
-#     st.markdown(download_csv(dt_prediction), unsafe_allow_html=True)
-#
-# # Define section title
-# st.header('Prediction for a single user')
-#
-# if st.checkbox("ALS predictions for user_id = 148744"):
-#     st.write('## Data')
-#     st.write(als_one_user)
-#     st.markdown(download_csv(als_one_user), unsafe_allow_html=True)
-#
-# if st.checkbox("DT predictions for user_id = 148744"):
-#     st.write('## Data')
-#     st.write(dt_one_user)
-#     st.markdown(download_csv(dt_one_user), unsafe_allow_html=True)
+# Define section title
+st.header('Models Performance')
+
+# Define content
+st.write('Here is the performance of the two models:')
+st.write('- **ALS**: RMSE = ' + str('%.3f' % RMSE_MODEL1))
+st.write('- **Decision Trees**: RMSE = ' + str('%.3f' % RMSE_MODEL2))
+
+
+if st.checkbox("Show ALS predicitons"):
+    st.write('## Data')
+    st.write(als_prediction)
+    st.markdown(download_csv(als_prediction), unsafe_allow_html=True)
+
+if st.checkbox("Show DT predicitons"):
+    st.write('## Data')
+    st.write(dt_prediction)
+    st.markdown(download_csv(dt_prediction), unsafe_allow_html=True)
+
+# Define section title
+st.header('Prediction for a single user')
+
+if st.checkbox("ALS predictions for user_id = 148744"):
+    st.write('## Data')
+    st.write(als_one_user)
+    st.markdown(download_csv(als_one_user), unsafe_allow_html=True)
+
+if st.checkbox("DT predictions for user_id = 148744"):
+    st.write('## Data')
+    st.write(dt_one_user)
+    st.markdown(download_csv(dt_one_user), unsafe_allow_html=True)
