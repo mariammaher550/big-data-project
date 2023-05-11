@@ -5,6 +5,7 @@ import base64
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
+import base64
 
 
 def get_two_cols(data_path):
@@ -13,7 +14,7 @@ def get_two_cols(data_path):
     """
     col_1 = []
     col_2 = []
-    with open(data_path, 'r', encoding='utf-8') as file:
+    with open(data_path, 'r') as file:
         for i, line in enumerate(file):
             if i == 0:
                 continue
@@ -24,6 +25,7 @@ def get_two_cols(data_path):
             col_1.append(book_title)
             col_2.append(count)
     return col_1, col_2
+
 
 
 def plot_bar(data, x_label, y_label, title, description):
@@ -50,7 +52,7 @@ def plot_table(data_path, col_name, title, description):
     book = []
     count = []
     encountered_age_ranges = set()
-    with open(data_path, 'r', encoding='utf-8') as file:
+    with open(data_path, 'r') as file:
         for i, line in enumerate(file):
             if i == 0:
                 continue
@@ -77,13 +79,15 @@ def plot_table(data_path, col_name, title, description):
     st.table(data)
 
 
+
+
 def download_csv(data):
     """
     Function to download CSV file
     """
     csv = data.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()
-    href = f'<a href="data:file/csv;base64,{b64}" download="data.csv">Download CSV</a>'
+    b64 = base64.b64encode(csv)
+    href = '<a href="data:file/csv;base64,{0}" download="data.csv">Download CSV</a>'.format(b64)
     return href
 
 
@@ -91,26 +95,26 @@ st.write("# Big Data Project")
 st.write("Book Recommendation System")
 st.write("Year: 2023")
 
-ratings = pd.read_csv("../data/ratings.csv")
-als_prediction = pd.read_csv('../output/als_predictions.csv')
-dt_prediction = pd.read_csv('../output/dt_predictions.csv')
-als_one_user = pd.read_csv('../output/als_rec_148744.csv')
-dt_one_user = pd.read_csv('../output/dt_rec_148744.csv')
+ratings = pd.read_csv("ratings.csv")
+als_prediction = pd.read_csv('/project/output/als_predictions.csv/als_predictions.csv')
+dt_prediction = pd.read_csv('/project/output/als_predictions.csv/dt_predictions.csv')
+als_one_user = pd.read_csv('/project/output/als_predictions.csv/als_rec_148744.csv')
+dt_one_user = pd.read_csv('/project/output/als_predictions.csv/dt_rec_148744.csv')
 
 # Define main content
 st.title('Data Characteristics')
-st.write(f'Number of data instances: **{ratings.shape[0]}**')
+st.write('Number of data instances: **' + str(ratings.shape[0]) + '**')
 features = ['user_id', 'isbn', 'location', 'age', 'book_title',
             'book_author', 'year_of_publication', 'publisher', 'rating']
-st.write(f'Number of features: **{len(features)}**')
+st.write('Number of features: **' + str(len(features)) + '**')
 st.write('### Feature Names')
 
 for col in features:
-    st.write(f'- {col}')
+    st.write('- ' + col)
 
 st.title('EDA')
 # Load data
-df_age_dist = pd.read_csv("../output/q1.csv")
+df_age_dist = pd.read_csv("/project/output/q1.csv")
 
 # Define the age groups
 bins = [0, 18, 25, 35, 55, 200]
@@ -126,7 +130,7 @@ plot_bar((grouped_df['age_group'], grouped_df['count']),
          "age distribution is a normal distribution."
          " In which most users' age is between 26-35.")
 
-book_titles, counts = get_two_cols('../output/q2.csv')
+book_titles, counts = get_two_cols('/project/output/q2.csv')
 
 plot_bar((book_titles[:5], counts[:5]), 'Book Titles',
          'Counts', 'Book Counts by Title',
@@ -134,20 +138,20 @@ plot_bar((book_titles[:5], counts[:5]), 'Book Titles',
          "Wild Animus comes first followed by the Lovely Bones and Davinci Code.")
 
 book_authors, authors_count = \
-    get_two_cols('../output/q3.csv')
+    get_two_cols('/project/output/q3.csv')
 plot_bar((book_authors[:5], authors_count[:5]),
          'Book Author', 'Counts', 'Authors Popularity',
          description="Here we can see the 5 top most rated "
          "authors by all users. Stephan king comes first followed by Nora Roberts and John Gresham."
          )
 
-plot_table('../output/q4.csv', "Book Title",
+plot_table('/project/output/q4.csv', "Book Title",
            "Most Popular Title by Age Range",
            description="Here we could see most popular book in each age range."
            " Wild Animus dominates."
            )
 
-plot_table('../output/q5.csv', "Book Author",
+plot_table('/project/output/q5.csv', "Book Author",
            "Most Popular Author by Age Range",
            description="Here we could see most popular authors in each age range. "
                        "In which Stephan King is most popular among young adults and middle age,"
@@ -163,8 +167,9 @@ st.header('Models Performance')
 
 # Define content
 st.write('Here is the performance of the two models:')
-st.write(f'- **ALS**: RMSE = {RMSE_MODEL1:.3f}')
-st.write(f'- **Decision Trees**: RMSE = {RMSE_MODEL2:.3f}')
+st.write('- **ALS**: RMSE = ' + str('%.3f' % RMSE_MODEL1))
+st.write('- **Decision Trees**: RMSE = ' + str('%.3f' % RMSE_MODEL2))
+
 
 if st.checkbox("Show ALS predicitons"):
     st.write('## Data')
