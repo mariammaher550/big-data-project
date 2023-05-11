@@ -26,10 +26,11 @@ def get_two_cols(data_path):
     return col_1, col_2
 
 
-def plot_bar(x, y, x_label, y_label, title):
+def plot_bar(x, y, x_label, y_label, title, description):
     """
         Create a bar chart with age groups on the x-axis and number of users on the y-axis
     """
+    st.write(description)
     fig, ax = plt.subplots()
     ax.bar(x, y, alpha=0.5, color='blue', edgecolor='black')
     ax.set_title(title)
@@ -40,7 +41,7 @@ def plot_bar(x, y, x_label, y_label, title):
     st.pyplot(fig, use_container_width=True)
 
 
-def plot_table(data_path, col_name, title):
+def plot_table(data_path, col_name, title, description):
     """
         Plotting a table
     """
@@ -69,6 +70,7 @@ def plot_table(data_path, col_name, title):
     })
 
     st.write(title)
+    st.write(description)
     # Display the DataFrame in a table format
     st.table(df)
 
@@ -102,7 +104,6 @@ features = ['user_id', 'isbn', 'location', 'age', 'book_title',
 for col in features:
     st.write(f'- {col}')
 
-
 st.title('EDA')
 # Load data
 df_age_dist = pd.read_csv("../output/q1.csv")
@@ -116,24 +117,31 @@ df_age_dist['age_group'] = pd.cut(df_age_dist['age'], bins=bins, labels=labels)
 grouped_df = df_age_dist.groupby('age_group')['count'].sum().reset_index()
 
 plot_bar(grouped_df['age_group'], grouped_df['count'],
-         "Age Group", "Number of Users", 'Age Distribution of Users')
-
+         "Age Group", "Number of Users", 'Age Distribution of Users',
+         description="Here we could see that users "
+                     "age distribution is a normal distribution. In which most users' age is between 26-35.")
 
 book_titles, counts = get_two_cols('../output/q2.csv')
 
 plot_bar(book_titles[:5], counts[:5], 'Book Titles',
-         'Counts', 'Book Counts by Title')
-
+         'Counts', 'Book Counts by Title', description="Here we can see the 5 top most rated books by all users. "
+                                                       "Wild Animus comes first followed by the Lovely Bones and Davinci Code.")
 
 book_authors, authors_count = get_two_cols('../output/q3.csv')
 plot_bar(book_authors[:5], authors_count[:5],
-         'Book Author', 'Counts', 'Authors Popularity')
+         'Book Author', 'Counts', 'Authors Popularity', description="Here we can see the 5 top most rated "
+         "authors by all users. Stephan king comes first followed by Nora Roberts and John Gresham.")
 
 plot_table('../output/q4.csv', "Book Title",
-           "Most Popular Title by Age Range")
+           "Most Popular Title by Age Range",
+           description="Here we could see most popular book in each age range. Wild Animus dominates.")
 
 plot_table('../output/q5.csv', "Book Author",
-           "Most Popular Author by Age Range")
+           "Most Popular Author by Age Range",
+           description="Here we could see most popular authors in each age range. "
+                       "In which Stephan King is most popular among young adults and middle age,"
+                       " while Nora Roberts appeals more to an older audience, "
+                       "And R.L Stine appeals more to younger audience ")
 
 # Define RMSE values for two models
 RMSE_MODEL1 = 5.32
