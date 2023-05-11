@@ -14,7 +14,7 @@ CREATE EXTERNAL TABLE books STORED AS AVRO LOCATION '/project/books' TBLPROPERTI
 CREATE EXTERNAL TABLE book_ratings STORED AS AVRO LOCATION '/project/book_ratings' TBLPROPERTIES ('avro.schema.url'='/project/avsc/book_ratings.avsc');
 
 -- age distribution of users
-INSERT OVERWRITE LOCAL DIRECTORY '/project/output/q1'
+INSERT OVERWRITE LOCAL DIRECTORY 'output/q1'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT age, COUNT(*) as count
 FROM users
@@ -22,7 +22,7 @@ GROUP BY age
 ORDER BY age;
 
 -- distribution of popularity by book title
-INSERT OVERWRITE LOCAL DIRECTORY '/project/output/q2'
+INSERT OVERWRITE LOCAL DIRECTORY 'output/q2'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT book_title, COUNT(*) as rating_count
 FROM books JOIN book_ratings ON books.isbn = book_ratings.isbn
@@ -31,7 +31,7 @@ ORDER BY rating_count DESC;
 
 
 -- distribution of popularity by book author
-INSERT OVERWRITE LOCAL DIRECTORY '/project/output/q3'
+INSERT OVERWRITE LOCAL DIRECTORY 'output/q3'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT book_author, COUNT(*) as rating_count
 FROM books JOIN book_ratings ON books.isbn = book_ratings.isbn
@@ -39,7 +39,7 @@ GROUP BY book_author
 ORDER BY rating_count DESC;
 
 -- top 5 popular books by different age range
-INSERT OVERWRITE LOCAL DIRECTORY '/project/output/q4'
+INSERT OVERWRITE LOCAL DIRECTORY 'output/q4'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT age_range, book_title, COUNT(*) as rating_count
 FROM (
@@ -63,7 +63,7 @@ ORDER BY age_range, rating_count DESC;
 
 
 -- top 5 popular authors by different age range
-INSERT OVERWRITE LOCAL DIRECTORY '/project/output/q5'
+INSERT OVERWRITE  LOCAL DIRECTORY 'output/q5'
 ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 SELECT age_range, book_author, COUNT(*) as rating_count
 FROM (
