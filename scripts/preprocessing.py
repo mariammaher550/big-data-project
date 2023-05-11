@@ -1,3 +1,6 @@
+"""
+In this module, we apply the preprocessing need for a book recommendation system
+"""
 import pandas as pd
 import numpy as np
 
