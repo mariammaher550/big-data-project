@@ -1,3 +1,4 @@
+To upload this project to the cluster run: scp -P 2222 big-data-project root@localhost:/root/big-data-project
 This repository is a template for the final project of big data course in IU-2023. It contains the following directories:
 
 - `data/` contains the dataset files.
