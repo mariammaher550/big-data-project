@@ -95,11 +95,11 @@ st.write("# Big Data Project")
 st.write("Book Recommendation System")
 st.write("Year: 2023")
 
-ratings = pd.read_csv("ratings.csv")
-als_prediction = pd.read_csv('/project/output/als_predictions.csv/als_predictions.csv')
-dt_prediction = pd.read_csv('/project/output/als_predictions.csv/dt_predictions.csv')
-als_one_user = pd.read_csv('/project/output/als_predictions.csv/als_rec_148744.csv')
-dt_one_user = pd.read_csv('/project/output/als_predictions.csv/dt_rec_148744.csv')
+ratings = pd.read_csv("data/ratings.csv")
+# als_prediction = pd.read_csv('output/als_predictions.csv/als_predictions.csv')
+# dt_prediction = pd.read_csv('output/als_predictions.csv/dt_predictions.csv')
+# als_one_user = pd.read_csv('output/als_predictions.csv/als_rec_148744.csv')
+# dt_one_user = pd.read_csv('output/als_predictions.csv/dt_rec_148744.csv')
 
 # Define main content
 st.title('Data Characteristics')
@@ -114,7 +114,7 @@ for col in features:
 
 st.title('EDA')
 # Load data
-df_age_dist = pd.read_csv("/project/output/q1.csv")
+df_age_dist = pd.read_csv("output/q1.csv")
 
 # Define the age groups
 bins = [0, 18, 25, 35, 55, 200]
@@ -130,7 +130,7 @@ plot_bar((grouped_df['age_group'], grouped_df['count']),
          "age distribution is a normal distribution."
          " In which most users' age is between 26-35.")
 
-book_titles, counts = get_two_cols('/project/output/q2.csv')
+book_titles, counts = get_two_cols('output/q2.csv')
 
 plot_bar((book_titles[:5], counts[:5]), 'Book Titles',
          'Counts', 'Book Counts by Title',
@@ -138,20 +138,20 @@ plot_bar((book_titles[:5], counts[:5]), 'Book Titles',
          "Wild Animus comes first followed by the Lovely Bones and Davinci Code.")
 
 book_authors, authors_count = \
-    get_two_cols('/project/output/q3.csv')
+    get_two_cols('output/q3.csv')
 plot_bar((book_authors[:5], authors_count[:5]),
          'Book Author', 'Counts', 'Authors Popularity',
          description="Here we can see the 5 top most rated "
          "authors by all users. Stephan king comes first followed by Nora Roberts and John Gresham."
          )
 
-plot_table('/project/output/q4.csv', "Book Title",
+plot_table('output/q4.csv', "Book Title",
            "Most Popular Title by Age Range",
            description="Here we could see most popular book in each age range."
            " Wild Animus dominates."
            )
 
-plot_table('/project/output/q5.csv', "Book Author",
+plot_table('output/q5.csv', "Book Author",
            "Most Popular Author by Age Range",
            description="Here we could see most popular authors in each age range. "
                        "In which Stephan King is most popular among young adults and middle age,"
@@ -162,34 +162,34 @@ plot_table('/project/output/q5.csv', "Book Author",
 RMSE_MODEL1 = 5.32
 RMSE_MODEL2 = 3.82
 
-# Define section title
-st.header('Models Performance')
-
-# Define content
-st.write('Here is the performance of the two models:')
-st.write('- **ALS**: RMSE = ' + str('%.3f' % RMSE_MODEL1))
-st.write('- **Decision Trees**: RMSE = ' + str('%.3f' % RMSE_MODEL2))
-
-
-if st.checkbox("Show ALS predicitons"):
-    st.write('## Data')
-    st.write(als_prediction)
-    st.markdown(download_csv(als_prediction), unsafe_allow_html=True)
-
-if st.checkbox("Show DT predicitons"):
-    st.write('## Data')
-    st.write(dt_prediction)
-    st.markdown(download_csv(dt_prediction), unsafe_allow_html=True)
-
-# Define section title
-st.header('Prediction for a single user')
-
-if st.checkbox("ALS predictions for user_id = 148744"):
-    st.write('## Data')
-    st.write(als_one_user)
-    st.markdown(download_csv(als_one_user), unsafe_allow_html=True)
-
-if st.checkbox("DT predictions for user_id = 148744"):
-    st.write('## Data')
-    st.write(dt_one_user)
-    st.markdown(download_csv(dt_one_user), unsafe_allow_html=True)
+# # Define section title
+# st.header('Models Performance')
+#
+# # Define content
+# st.write('Here is the performance of the two models:')
+# st.write('- **ALS**: RMSE = ' + str('%.3f' % RMSE_MODEL1))
+# st.write('- **Decision Trees**: RMSE = ' + str('%.3f' % RMSE_MODEL2))
+#
+#
+# if st.checkbox("Show ALS predicitons"):
+#     st.write('## Data')
+#     st.write(als_prediction)
+#     st.markdown(download_csv(als_prediction), unsafe_allow_html=True)
+#
+# if st.checkbox("Show DT predicitons"):
+#     st.write('## Data')
+#     st.write(dt_prediction)
+#     st.markdown(download_csv(dt_prediction), unsafe_allow_html=True)
+#
+# # Define section title
+# st.header('Prediction for a single user')
+#
+# if st.checkbox("ALS predictions for user_id = 148744"):
+#     st.write('## Data')
+#     st.write(als_one_user)
+#     st.markdown(download_csv(als_one_user), unsafe_allow_html=True)
+#
+# if st.checkbox("DT predictions for user_id = 148744"):
+#     st.write('## Data')
+#     st.write(dt_one_user)
+#     st.markdown(download_csv(dt_one_user), unsafe_allow_html=True)

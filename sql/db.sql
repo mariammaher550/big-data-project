@@ -33,9 +33,9 @@ ALTER TABLE book_ratings ADD CONSTRAINT fk_isbn FOREIGN KEY (isbn) REFERENCES bo
 -- FOREIGN KEY (isbn) REFERENCES books(isbn);
 
 --
-\COPY books (isbn, book_title, book_author, year_of_publication, publisher) FROM 'books.csv' DELIMITER ',' CSV HEADER;
-\COPY users (user_id, location, age) FROM 'users.csv' DELIMITER ',' CSV HEADER;
-\COPY book_ratings (user_id, isbn, rating) FROM 'ratings.csv' DELIMITER ',' CSV HEADER;
+\COPY books (isbn, book_title, book_author, year_of_publication, publisher) FROM 'data/books.csv' DELIMITER ',' CSV HEADER;
+\COPY users (user_id, location, age) FROM 'data/users.csv' DELIMITER ',' CSV HEADER;
+\COPY book_ratings (user_id, isbn, rating) FROM 'data/ratings.csv' DELIMITER ',' CSV HEADER;
 
 
 -- select * from book_ratings where user_id=276725

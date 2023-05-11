@@ -2,7 +2,5 @@ pylint
 pyspark
 pandas
 streamlit
-pandas
-kaggle
 numpy
 matplotlib
