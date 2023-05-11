@@ -1,19 +1,19 @@
 """
 This module provides a web-based dashboard for a book recommendation system.
 """
+import base64
+import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-import pandas as pd
-import base64
 
 
 def get_two_cols(data_path):
     """
-        Reading the data and returning 2 columns of the data
+    Reading the data and returning 2 columns of the data
     """
     col_1 = []
     col_2 = []
-    with open(data_path, 'r') as file:
+    with open(data_path, 'r', encoding='utf-8') as file:
         for i, line in enumerate(file):
             if i == 0:
                 continue
@@ -26,30 +26,31 @@ def get_two_cols(data_path):
     return col_1, col_2
 
 
-def plot_bar(x, y, x_label, y_label, title, description):
+def plot_bar(data, x_label, y_label, title, description):
     """
-        Create a bar chart with age groups on the x-axis and number of users on the y-axis
+    Create a bar chart with age groups on the x-axis and number of users on the y-axis
     """
+    x_data, y_data = data
     st.write(description)
-    fig, ax = plt.subplots()
-    ax.bar(x, y, alpha=0.5, color='blue', edgecolor='black')
-    ax.set_title(title)
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-    ax.tick_params(axis='x', rotation=45)
+    fig, axis = plt.subplots()
+    axis.bar(x_data, y_data, alpha=0.5, color='blue', edgecolor='black')
+    axis.set_title(title)
+    axis.set_xlabel(x_label)
+    axis.set_ylabel(y_label)
+    axis.tick_params(axis='x', rotation=45)
     # Display the bar chart using Streamlit
     st.pyplot(fig, use_container_width=True)
 
 
 def plot_table(data_path, col_name, title, description):
     """
-        Plotting a table
+    Plotting a table
     """
     age_range = []
     book = []
     count = []
     encountered_age_ranges = set()
-    with open(data_path, 'r') as file:
+    with open(data_path, 'r', encoding='utf-8') as file:
         for i, line in enumerate(file):
             if i == 0:
                 continue
@@ -64,15 +65,16 @@ def plot_table(data_path, col_name, title, description):
                 count.append(int(parts[-1]))
 
     # Create a sample DataFrame
-    df = pd.DataFrame({
+    data = pd.DataFrame({
         'Age Range': age_range,
         col_name: book,
+        'Count': count
     })
 
     st.write(title)
     st.write(description)
     # Display the DataFrame in a table format
-    st.table(df)
+    st.table(data)
 
 
 def download_csv(data):
@@ -85,8 +87,9 @@ def download_csv(data):
     return href
 
 
-st.write("# Big Data Project  \n Book Recommendation System  \n",
-         "*Year*: **2023**")
+st.write("# Big Data Project")
+st.write("Book Recommendation System")
+st.write("Year: 2023")
 
 ratings = pd.read_csv("../data/ratings.csv")
 als_prediction = pd.read_csv('../output/als_predictions.csv')
@@ -97,10 +100,11 @@ dt_one_user = pd.read_csv('../output/dt_rec_148744.csv')
 # Define main content
 st.title('Data Characteristics')
 st.write(f'Number of data instances: **{ratings.shape[0]}**')
-st.write(f'Number of features: **{ratings.shape[1]}**')
-st.write('### Feature Names')
 features = ['user_id', 'isbn', 'location', 'age', 'book_title',
             'book_author', 'year_of_publication', 'publisher', 'rating']
+st.write(f'Number of features: **{len(features)}**')
+st.write('### Feature Names')
+
 for col in features:
     st.write(f'- {col}')
 
@@ -116,25 +120,32 @@ df_age_dist['age_group'] = pd.cut(df_age_dist['age'], bins=bins, labels=labels)
 # Group the dataframe by age_group and sum the number of users in each group
 grouped_df = df_age_dist.groupby('age_group')['count'].sum().reset_index()
 
-plot_bar(grouped_df['age_group'], grouped_df['count'],
+plot_bar((grouped_df['age_group'], grouped_df['count']),
          "Age Group", "Number of Users", 'Age Distribution of Users',
          description="Here we could see that users "
-                     "age distribution is a normal distribution. In which most users' age is between 26-35.")
+         "age distribution is a normal distribution."
+         " In which most users' age is between 26-35.")
 
 book_titles, counts = get_two_cols('../output/q2.csv')
 
-plot_bar(book_titles[:5], counts[:5], 'Book Titles',
-         'Counts', 'Book Counts by Title', description="Here we can see the 5 top most rated books by all users. "
-                                                       "Wild Animus comes first followed by the Lovely Bones and Davinci Code.")
+plot_bar((book_titles[:5], counts[:5]), 'Book Titles',
+         'Counts', 'Book Counts by Title',
+         description="Here we can see the 5 top most rated books by all users. "
+         "Wild Animus comes first followed by the Lovely Bones and Davinci Code.")
 
-book_authors, authors_count = get_two_cols('../output/q3.csv')
-plot_bar(book_authors[:5], authors_count[:5],
-         'Book Author', 'Counts', 'Authors Popularity', description="Here we can see the 5 top most rated "
-         "authors by all users. Stephan king comes first followed by Nora Roberts and John Gresham.")
+book_authors, authors_count = \
+    get_two_cols('../output/q3.csv')
+plot_bar((book_authors[:5], authors_count[:5]),
+         'Book Author', 'Counts', 'Authors Popularity',
+         description="Here we can see the 5 top most rated "
+         "authors by all users. Stephan king comes first followed by Nora Roberts and John Gresham."
+         )
 
 plot_table('../output/q4.csv', "Book Title",
            "Most Popular Title by Age Range",
-           description="Here we could see most popular book in each age range. Wild Animus dominates.")
+           description="Here we could see most popular book in each age range."
+           " Wild Animus dominates."
+           )
 
 plot_table('../output/q5.csv', "Book Author",
            "Most Popular Author by Age Range",
