@@ -1,4 +1,4 @@
-:q1echo "age,count" > output/q1.csv
+echo "age,count" > output/q1.csv
 cat output/q1/* >> output/q1.csv
 
 echo "book_title,rating_count" > output/q2.csv
