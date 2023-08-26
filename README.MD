@@ -27,8 +27,7 @@ The project is divided into several stages:
 
 ### Data Analysis
 - Exploratory Data Analysis (EDA) is performed using HiveQL on the Tez engine.
-- Predictive Data Analysis (PDA) is conducted by building machine learning models using SparkML.
-- Feature extraction and data preprocessing are integral parts of this stage.
+- Predictive Data Analysis (PDA) is conducted by building machine learning models using SparkML. Altearnating Least Squares and Decision Trees were used for building the recommendation system.
 
 ### Presentation
 - Analysis results are presented in a user-friendly dashboard using Streamlit.
